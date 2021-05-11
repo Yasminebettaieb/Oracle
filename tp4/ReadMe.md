@@ -169,7 +169,8 @@ ________________________________________________________________________________
       * [ username: devsecops2, password: devsecops2 ]
 
 
-``` create user dev1 identified by dev1;
+```
+    create user dev1 identified by dev1;
     create user dev2 identified by dev2;
     create user tester1 identified by tester1;
     create user tester2 identified by tester2;
