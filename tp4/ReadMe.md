@@ -188,7 +188,9 @@ ________________________________________________________________________________
      * Création de session.
      * Création,lecture, modification de structure et suppression de tables.
 
-```sql
+```
+    grant create procedure,create view,create sequence ,create session,create any table,
+    select any table,alter any table,drop any table to dev1;
 ---
 ```
 
@@ -197,7 +199,7 @@ ________________________________________________________________________________
  
    - **Révoquer tous les privilèges associès à l'utilisateur dev1 :** 
 
-```sql
+```revoke create procedure,create view,create sequence ,create session,create any table,select any table,alter any table,drop any table from dev1;
 ---
 ```
 
@@ -220,16 +222,20 @@ ________________________________________________________________________________
      
      C) Le rôle de l'équipe DevSecOps permet d'avoir tous les privilèges avec mode administrateur de la base:  
 
-```sql
+``` create role dev;
+    create role test;
+    create role devsecops;
 ---
 ```
-```sql
+```grant create procedure,create view,create sequence ,create session,create any table,
+    select any table,alter any table,drop any table to dev; 
 ---
 ```
-```sql
+```grant create session,connect,select any table  to test;
 ---
 ```
-```sql
+```grant create procedure,create view,create sequence ,create session,create any table,
+   select any table,alter any table,drop any table to devsecops;
 ---
 ```
 
@@ -238,24 +244,25 @@ ________________________________________________________________________________
    - **Attribuer à chaque utilisateur, le rôle qui lui correspond:** 
   
 
-```sql
+``` grant dev to dev1,dev2;
 ---
 ```
-```sql
+```grant test to tester1,tester2;
 ---
 ```
-```sql
+```grant devsecops to devscops1,devscops2;
 ---
 ```
 
    - **Limiter l'accès pour les testeurs de sorte qu'ils n'accèdent qu'à la table des employés "EMP":** 
   
 
-```sql
+```grant connect,select any table to test;
+   revoke connect , select any table from test;
 ---
 ```
 
- ```sql
+ ```grant select on emp to test;
 ---
 ```
  
@@ -264,7 +271,7 @@ ________________________________________________________________________________
    - **Autoriser tous les utilisateurs sur le système pour interroger les données de la table EMP :** 
   
 
- ```sql
+ ```grant select on emp to public;
 ---
 ```
 
@@ -290,7 +297,16 @@ ________________________________________________________________________________
 
 
 
-```sql 
+```CREATE PROFILE dev 
+LIMIT SESSIONS_PER_USER  UNLIMITED
+CPU_PER_SESSION 10000
+CPU_PER_CALL 1000 
+CONNECT_TIME 45 
+LOGICAL_READS_PER_SESSION DEFAULT 
+LOGICAL_READS_PER_CALL 1000 
+PRIVATE_SGA 25K 
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
@@ -307,7 +323,16 @@ ________________________________________________________________________________
   * ***Taille maximale de l'SGA privée:*** ***25K***
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
-```sql 
+```CREATE PROFILE test 
+LIMIT SESSIONS_PER_USER  5 
+CPU_PER_SESSION UNLIMITED 
+CPU_PER_CALL 3000
+CONNECT_TIME 45
+LOGICAL_READS_PER_SESSION DEFAULT 
+LOGICAL_READS_PER_CALL 1000 
+PRIVATE_SGA 25K 
+PASSWORD_LIFE_TIME 60 
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
@@ -322,12 +347,21 @@ ________________________________________________________________________________
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
 
-```sql 
+```CREATE PROFILE  devsecops
+LIMIT SESSIONS_PER_USER  UNLIMITED 
+CPU_PER_SESSION UNLIMITED
+CPU_PER_CALL 3000 
+CONNECT_TIME 3600 
+LOGICAL_READS_PER_SESSION DEFAULT 
+LOGICAL_READS_PER_CALL 5000 
+PRIVATE_SGA 80K 
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
   - **Attribuer à l'utilisateur "dev1", le profile qui lui correspond:** 
-```sql
+```Alter user dev1 profile dev;
 ---
 ```
 
