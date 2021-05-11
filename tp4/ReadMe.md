@@ -200,7 +200,8 @@ ________________________________________________________________________________
  
    - **Révoquer tous les privilèges associès à l'utilisateur dev1 :** 
 
-```revoke create procedure,create view,create sequence ,create session,create any table,select any table,alter any table,drop any table from dev1;
+```
+revoke create procedure,create view,create sequence ,create session,create any table,select any table,alter any table,drop any table from dev1;
 ---
 ```
 
@@ -223,19 +224,23 @@ ________________________________________________________________________________
      
      C) Le rôle de l'équipe DevSecOps permet d'avoir tous les privilèges avec mode administrateur de la base:  
 
-``` create role dev;
+``` 
+    create role dev;
     create role test;
     create role devsecops;
 ---
 ```
-```grant create procedure,create view,create sequence ,create session,create any table,
+``` 
+    grant create procedure,create view,create sequence ,create session,create any table,
     select any table,alter any table,drop any table to dev; 
 ---
 ```
-```grant create session,connect,select any table  to test;
+```
+    grant create session,connect,select any table  to test;
 ---
 ```
-```grant create procedure,create view,create sequence ,create session,create any table,
+```
+   grant create procedure,create view,create sequence ,create session,create any table,
    select any table,alter any table,drop any table to devsecops;
 ---
 ```
@@ -245,25 +250,30 @@ ________________________________________________________________________________
    - **Attribuer à chaque utilisateur, le rôle qui lui correspond:** 
   
 
-``` grant dev to dev1,dev2;
+``` 
+   grant dev to dev1,dev2;
 ---
 ```
-```grant test to tester1,tester2;
+```
+  grant test to tester1,tester2;
 ---
 ```
-```grant devsecops to devscops1,devscops2;
+```
+  grant devsecops to devscops1,devscops2;
 ---
 ```
 
    - **Limiter l'accès pour les testeurs de sorte qu'ils n'accèdent qu'à la table des employés "EMP":** 
   
 
-```grant connect,select any table to test;
+```
+   grant connect,select any table to test;
    revoke connect , select any table from test;
 ---
 ```
 
- ```grant select on emp to test;
+ ```
+   grant select on emp to test;
 ---
 ```
  
@@ -272,7 +282,8 @@ ________________________________________________________________________________
    - **Autoriser tous les utilisateurs sur le système pour interroger les données de la table EMP :** 
   
 
- ```grant select on emp to public;
+ ```
+   grant select on emp to public;
 ---
 ```
 
@@ -298,7 +309,8 @@ ________________________________________________________________________________
 
 
 
-```CREATE PROFILE dev 
+```
+CREATE PROFILE dev 
 LIMIT SESSIONS_PER_USER  UNLIMITED
 CPU_PER_SESSION 10000
 CPU_PER_CALL 1000 
@@ -324,7 +336,8 @@ PASSWORD_REUSE_TIME 10;
   * ***Taille maximale de l'SGA privée:*** ***25K***
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
-```CREATE PROFILE test 
+```
+CREATE PROFILE test 
 LIMIT SESSIONS_PER_USER  5 
 CPU_PER_SESSION UNLIMITED 
 CPU_PER_CALL 3000
@@ -348,7 +361,8 @@ PASSWORD_REUSE_TIME 10;
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
 
-```CREATE PROFILE  devsecops
+```
+CREATE PROFILE  devsecops
 LIMIT SESSIONS_PER_USER  UNLIMITED 
 CPU_PER_SESSION UNLIMITED
 CPU_PER_CALL 3000 
@@ -362,7 +376,8 @@ PASSWORD_REUSE_TIME 10;
 ```
 
   - **Attribuer à l'utilisateur "dev1", le profile qui lui correspond:** 
-```Alter user dev1 profile dev;
+```
+Alter user dev1 profile dev;
 ---
 ```
 
