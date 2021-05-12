@@ -240,8 +240,7 @@ revoke create procedure,create view,create sequence ,create session,create any t
 ---
 ```
 ```
-   grant create procedure,create view,create sequence ,create session,create any table,
-   select any table,alter any table,drop any table to devsecops;
+    grant ALL PRIVILEGES TO devsecops WITH ADMIN OPTION;
 ---
 ```
 
@@ -267,13 +266,12 @@ revoke create procedure,create view,create sequence ,create session,create any t
   
 
 ```
-   grant connect,select any table to test;
-   revoke connect , select any table from test;
+   revoke select any table from test; 
 ---
 ```
 
  ```
-   grant select on emp to test;
+  grant select on emp to test;
 ---
 ```
  
@@ -291,7 +289,8 @@ revoke create procedure,create view,create sequence ,create session,create any t
 
  
  
-```sql
+```
+  revoke ALL PRIVILEGES on emp from devsecops;
 ---
 ```
 
